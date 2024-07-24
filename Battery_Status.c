@@ -28,11 +28,11 @@ BattStatus_SoC_Chk_t socIsOk(float soc)
 BattStatus_Temp_Chk_t TemperatureIsOk(float temperature )
 {
 	BattStatus_Temp_Chk_t Temp_status_t;
-	Temp_status_t = OUT_OF_RANGE_TEMP;
+	Temp_status_t = NORMAL_TEMP_STATUS;
 	
-	if(0<temperature<45)
+	if(temperature < 0 || temperature > 45)
     {
-      Temp_status_t = NORMAL_TEMP_STATUS;
+      Temp_status_t = OUT_OF_RANGE_TEMP;
     }
     
 	
@@ -43,10 +43,10 @@ BattStatus_Temp_Chk_t TemperatureIsOk(float temperature )
 BattStatus_ChargeRate_Chk_t chargeRateIsOk(float chargeRate)
 {
 	BattStatus_ChargeRate_Chk_t ChargeRatestatus_t;
-	ChargeRatestatus_t =  OUT_OF_RANGE_CHARGERATE;
-	if(0.1 < chargeRate <0.8)
+	ChargeRatestatus_t = NORMAL_CHARGERATE; 
+	if(chargeRate >0.8)
     {
-        ChargeRatestatus_t = NORMAL_CHARGERATE;
+        ChargeRatestatus_t = OUT_OF_RANGE_CHARGERATE;
     }
     return ChargeRatestatus_t;
 }
