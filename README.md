@@ -1,4 +1,5 @@
 # paradigm-shift-c
+using Extension 1: Early Warning-work condtion for checking Warning: Approaching discharge and  Warning: Approaching charge-peak
 
 # Programming Paradigms
 
