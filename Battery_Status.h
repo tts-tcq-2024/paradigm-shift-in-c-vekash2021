@@ -26,4 +26,4 @@ BattStatus_Temp_Chk_t TemperatureIsOk(float temperature);
 BattStatus_ChargeRate_Chk_t chargeRateIsOk(float chargeRate);
 
 
-#endif BATTERY_STATUS_H
+#endif /*BATTERY_STATUS_H */
