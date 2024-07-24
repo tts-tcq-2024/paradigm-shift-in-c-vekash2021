@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <assert.h>
 #include "Battery_Status.h"
 
 BattStatus_SoC_Chk_t socIsOk(float soc)
