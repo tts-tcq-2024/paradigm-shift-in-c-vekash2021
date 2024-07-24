@@ -9,19 +9,15 @@ BattStatus_SoC_Chk_t socIsOk(float soc)
 	{
 		SoC_status_t = OUT_OF_RANGE_SOC;
 	}
-	else if(soc==24)
+	if(soc==24)
 	{
 		SoC_status_t = APPROACH_DISCHARGE;
 	}
-	else if(soc==76)
+	if(soc==76)
 	{
 		SoC_status_t = APPROACH_CHARGE;
 	}
-	else
-	{
-		SoC_status_t = NORMAL_SOC_STATUS;
-	}
-
+	
  return SoC_status_t;
 }
 
