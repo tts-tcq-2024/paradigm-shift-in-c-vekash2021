@@ -2,23 +2,19 @@
 #include <assert.h>
 #include "Battery_Status.h"
 
+
+BattStatus_SoC_Chk_t checkRange(float value, float low, float high) {
+    if (value <= low - 4) {
+        return APPROACH_DISCHARGE;
+    }
+    if (value >= high - 4) {
+        return APPROACH_CHARGE;
+    }
+    return NORMAL_SOC_STATUS;
+}
 BattStatus_SoC_Chk_t socIsOk(float soc)
 {
-	BattStatus_SoC_Chk_t  SoC_status_t; 
-	if (soc < 20 || soc > 80)
-	{
-		SoC_status_t = OUT_OF_RANGE_SOC;
-	}
-	if(soc==24)
-	{
-		SoC_status_t = APPROACH_DISCHARGE;
-	}
-	if(soc==76)
-	{
-		SoC_status_t = APPROACH_CHARGE;
-	}
-	
- return SoC_status_t;
+	return checkRange(soc, 20, 80);
 }
 
 BattStatus_Temp_Chk_t TemperatureIsOk(float temperature )
