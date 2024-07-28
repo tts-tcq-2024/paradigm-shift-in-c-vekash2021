@@ -10,14 +10,14 @@ int check_low_limit(float value, ParameterConfig config) {
     return (value < config.min) ? 3 : 0;
 }
 
+ 
 int check_high_limit(float value, ParameterConfig config) {
     return (value > config.max) ? 4 : 0;
 }
 
+
 int check_warning(float value, ParameterConfig config) {
-    if (!config.enable_warning) {
-        return 0;
-    }
+    
     float warning_min = config.min + (config.max * config.warning_tolerance);
     float warning_max = config.max - (config.max * config.warning_tolerance);
     if (value < warning_min) {
