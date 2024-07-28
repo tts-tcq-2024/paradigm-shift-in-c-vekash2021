@@ -1,61 +1,44 @@
 #include <stdio.h>
-#include <assert.h>
+#include <stdbool.h>
 #include "Battery_Status.h"
 
+ParameterConfig SoC = {20, 80, 0.05, true};
+ParameterConfig Temperature = {0, 45, 0.05, true};
+ParameterConfig Charge_rate = {0, 0.8, 0.05, true};
 
-BattStatus_SoC_Chk_t checkRange(float value, float low, float high) {
-    if (value <= low - 4) {
-        return APPROACH_DISCHARGE;
+void check_parameter(const char* param_name, float value, ParameterConfig config) {
+    float warning_min = config.min + (config.max * config.warning_tolerance);
+    float warning_max = config.max - (config.max * config.warning_tolerance);
+
+    int message_index = 0;  // Default to "Normal"
+
+    if (value < config.min) {
+        message_index = 3;  // Alarm: Low limit breached
+    } else if (value > config.max) {
+        message_index = 4;  // Alarm: High limit breached
+    } else if (config.enable_warning) {
+        if (value < warning_min) {
+            message_index = 1;  // Warning: Approaching discharge
+        } else if (value > warning_max) {
+            message_index = 2;  // Warning: Approaching charge-peak
+        }
     }
-    if (value >= high - 4) {
-        return APPROACH_CHARGE;
-    }
-    return NORMAL_SOC_STATUS;
-}
-BattStatus_SoC_Chk_t socIsOk(float soc)
-{
-	return checkRange(soc, 20, 80);
-}
 
-BattStatus_Temp_Chk_t TemperatureIsOk(float temperature )
-{
-	BattStatus_Temp_Chk_t Temp_status_t;
-	Temp_status_t = NORMAL_TEMP_STATUS;
-	
-	if(temperature < 0 || temperature > 45)
-    {
-      Temp_status_t = OUT_OF_RANGE_TEMP;
-    }
-    
-	
-    return Temp_status_t;
-    
+    printf("%s: %s\n", param_name, messages[language][message_index]);
 }
-
-BattStatus_ChargeRate_Chk_t chargeRateIsOk(float chargeRate)
-{
-	BattStatus_ChargeRate_Chk_t ChargeRatestatus_t;
-	ChargeRatestatus_t = NORMAL_CHARGERATE; 
-	if(chargeRate >0.8)
-    {
-        ChargeRatestatus_t = OUT_OF_RANGE_CHARGERATE;
-    }
-    return ChargeRatestatus_t;
-}
-
-int batteryIsOk(float temperature, float soc, float chargeRate) 
-{
-	BattStatus_Temp_Chk_t Temp_status_t=TemperatureIsOk(temperature);
-	BattStatus_SoC_Chk_t  SoC_status_t=socIsOk(soc);
-	BattStatus_ChargeRate_Chk_t ChargeRatestatus_t=chargeRateIsOk(chargeRate);
-	
-	return Temp_status_t&&SoC_status_t&&ChargeRatestatus_t;
-}
-
 
 int main() {
-    assert(batteryIsOk(25, 70, 0.7));
-    assert(!batteryIsOk(50, 85, 0));
+    // Example current values for parameters
+    float current_SoC = 86;
+    float current_Temperature = 43;
+    float current_Charge_rate = 0.7;
+
+    // Check each parameter
+    printf("Checking parameters with current values:\n");
     
+    check_parameter("SoC", current_SoC, SoC);
+    check_parameter("Temperature", current_Temperature, Temperature);
+    check_parameter("Charge_rate", current_Charge_rate, Charge_rate);
+
     return 0;
 }
